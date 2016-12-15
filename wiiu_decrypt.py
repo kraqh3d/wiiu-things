@@ -14,14 +14,14 @@ import os
 import struct
 import sys
 from Crypto.Cipher import AES
-from Crypto.Hash import SHA1
+from Crypto.Hash import SHA
 
 # put the common key here to decrypt things
 wiiu_common_key = ""
 
 ##########################
 
-wiiu_common_key_hash = SHA1.new(wiiu_common_key.encode('utf-8').upper())
+wiiu_common_key_hash = SHA.new(wiiu_common_key.encode('utf-8').upper())
 if wiiu_common_key_hash.hexdigest() != 'e3fbc19d1306f6243afe852ab35ed9e1e4777d3a':
     sys.exit("Wrong Wii U Common Key. Place the correct one in the script.")
 
@@ -87,7 +87,7 @@ print("Decrypted Titlekey:     " + binascii.hexlify(decrypted_titlekey).decode('
 for c in contents:
     print("Decrypting {}...".format(c[0]))
     cipher_content = AES.new(decrypted_titlekey, AES.MODE_CBC, c[1] + (b"\0" * 14))
-    content_hash = SHA1.new()
+    content_hash = SHA.new()
     left = c[3]  # set to current size
 
     with open(c[0], "rb") as encrypted:
