@@ -45,6 +45,8 @@ content_count = 0
 with open("title.tmd", "rb") as tmd:
     tmd.seek(0x18C)
     title_id = tmd.read(0x8)
+    tmd.seek(0x1DC)
+    version = struct.unpack(">H", tmd.read(0x2))[0]
     tmd.seek(0x1DE)
     content_count = struct.unpack(">H", tmd.read(0x2))[0]
     tmd.seek(0x204)
@@ -64,6 +66,7 @@ with open("title.tmd", "rb") as tmd:
         contents.append([content_id, content_index, content_type, content_size, content_hash])
 
 print("Title ID:               " + binascii.hexlify(title_id).decode('utf-8').upper())
+print("Version :               " + str(version))
 
 # find encrypted titlekey
 encrypted_titlekey = b""
